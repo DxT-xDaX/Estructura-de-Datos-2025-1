@@ -1,0 +1,122 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        String archivoCSV = "Presencia Redes Sociales.csv";
+        List<String[]> datos = new ArrayList<>();
+        String line;
+        String separador = ",";
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivoCSV))) {
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(separador);
+                datos.add(parts);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DifSeguidoresTw(datos);
+
+        DifVisualizacionesYT(datos);
+
+        PromedioCrecimientoTwFb(datos);
+
+        PromedioMG(datos);
+    }
+
+    private static void DifSeguidoresTw(List<String[]> datos) {
+        for (String[] fila : datos) {
+            if (fila[0].equals("TWITTER") && fila[1].contains("SEGUIDORES")) {
+                int enero = Integer.parseInt(fila[3].replace(",", ""));
+                int junio = Integer.parseInt(fila[8].replace(",", ""));
+                int diferencia = junio - enero;
+                System.out.println("Diferencia de seguidores en Twitter entre enero y junio: " + diferencia);
+                System.out.print("\n");
+            }
+        }
+    }
+
+    private static void DifVisualizacionesYT(List<String[]> datos) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Seleccione el mes inicial 1-6: ");
+        int mesI = scanner.nextInt();
+        System.out.print("Seleccione el mes final 1-6: ");
+        int mesF = scanner.nextInt();
+        System.out.print("\n");
+
+        for (String[] fila : datos) {
+            if (fila[0].equals("YOUTUBE") && fila[1].equals("VISUALIZACIONES")) {
+                int visualizacionesInicio = Integer.parseInt(fila[2 + mesI]);
+                int visualizacionesFinal = Integer.parseInt(fila[2 + mesF]);
+                int diferencia = visualizacionesFinal - visualizacionesInicio;
+                System.out.println("Diferencia de visualizaciones de YouTube entre el mes " + mesI + " y " + mesF + ": " + diferencia);
+                System.out.print("\n");
+            }
+        }
+    }
+
+    private static void PromedioCrecimientoTwFb(List<String[]> datos) {
+        double totalCrecimientoTw = 0;
+        double totalCrecimientoFb = 0;
+        int count = 6;
+
+        for (String[] fila : datos) {
+            if (fila[0].equals("TWITTER") && fila[1].equals("CRECIMIENTO DE FOLLOWERS")) {
+                for (int i = 3; i <= 8; i++) {
+                    totalCrecimientoTw += Integer.parseInt(fila[i].replace(",", ""));
+                }
+            } else if (fila[0].equals("FACEBOOK") && fila[1].equals("CRECIMIENTO (seguidores)")) {
+                for (int i = 3; i <= 8; i++) {
+                    totalCrecimientoFb += Integer.parseInt(fila[i].replace(",", ""));
+                }
+            }
+        }
+
+        double promedioCrecimientoTw = totalCrecimientoTw / count;
+        double promedioCrecimientoFb = totalCrecimientoFb / count;
+
+        System.out.println("Promedio de crecimiento en Twitter de enero a junio: " + promedioCrecimientoTw);
+        System.out.print("\n");
+        System.out.println("Promedio de crecimiento en Facebook de enero a junio: " + promedioCrecimientoFb);
+        System.out.print("\n");
+    }
+
+    private static void PromedioMG(List<String[]> datos) {
+        double MGYT = 0;
+        double MGTW = 0;
+        double MGFB = 0;
+        int count = 6;
+
+        for (String[] fila : datos) {
+            if (fila[1].equals("ME GUSTA")) {
+                if (fila[0].equals("YOUTUBE")) {
+                    for (int i = 3; i <= 8; i++) {
+                        MGYT += Integer.parseInt(fila[i].replace(",", ""));
+                    }
+                } else if (fila[0].equals("TWITTER")) {
+                    for (int i = 3; i <= 8; i++) {
+                        MGTW += Integer.parseInt(fila[i].replace(",", ""));
+                    }
+                } else if (fila[0].equals("FACEBOOK")) {
+                    for (int i = 3; i <= 8; i++) {
+                        MGFB += Integer.parseInt(fila[i].replace(",", ""));
+                    }
+                }
+            }
+        }
+
+        double promedioMeGustaYouTube = MGYT / count;
+        double promedioMeGustaTwitter = MGTW / count;
+        double promedioMeGustaFacebook = MGFB / count;
+
+        System.out.println("Promedio de Me gusta en YouTube de enero a junio: " + promedioMeGustaYouTube);
+        System.out.print("\n");
+        System.out.println("Promedio de Me gusta en Twitter de enero a junio: " + promedioMeGustaTwitter);
+        System.out.print("\n");
+        System.out.println("Promedio de Me gusta en Facebook de enero a junio: " + promedioMeGustaFacebook);
+    }
+}
