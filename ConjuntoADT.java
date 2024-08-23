@@ -1,0 +1,67 @@
+import java.util.HashSet;
+import java.util.Set;
+
+public class ConjuntoADT<T> {
+    private Set<T> conjunto;
+
+    public ConjuntoADT() {
+        this.conjunto = new HashSet<>();
+    }
+
+    public int longitud() {
+        return conjunto.size();
+    }
+
+    public boolean contiene(T valor) {
+        return conjunto.contains(valor);
+    }
+
+
+    public void agregar(T valor) {
+        conjunto.add(valor);
+    }
+
+    public void eliminar(T valor) {
+        conjunto.remove(valor);
+    }
+
+    public boolean equals(ConjuntoADT<T> otroConjunto) {
+        return this.conjunto.equals(otroConjunto.conjunto);
+    }
+
+    public boolean esSubConjunto(ConjuntoADT<T> otroConjunto) {
+        return this.conjunto.containsAll(otroConjunto.conjunto);
+    }
+
+    public ConjuntoADT<T> union(ConjuntoADT<T> otroConjunto) {
+        ConjuntoADT<T> nuevoConjunto = new ConjuntoADT<>();
+        nuevoConjunto.conjunto.addAll(this.conjunto);
+        nuevoConjunto.conjunto.addAll(otroConjunto.conjunto);
+        return nuevoConjunto;
+    }
+
+    public ConjuntoADT<T> interseccion(ConjuntoADT<T> otroConjunto) {
+        ConjuntoADT<T> nuevoConjunto = new ConjuntoADT<>();
+        for (T valor : this.conjunto) {
+            if (otroConjunto.contiene(valor)) {
+                nuevoConjunto.agregar(valor);
+            }
+        }
+        return nuevoConjunto;
+    }
+
+    public ConjuntoADT<T> diferencia(ConjuntoADT<T> otroConjunto) {
+        ConjuntoADT<T> nuevoConjunto = new ConjuntoADT<>();
+        for (T valor : this.conjunto) {
+            if (!otroConjunto.contiene(valor)) {
+                nuevoConjunto.agregar(valor);
+            }
+        }
+        return nuevoConjunto;
+    }
+
+    @Override
+    public String toString() {
+        return conjunto.toString();
+    }
+}
