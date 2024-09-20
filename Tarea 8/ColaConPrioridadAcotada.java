@@ -36,9 +36,9 @@ public class ColaConPrioridadAcotada<E> {
             System.out.println("No hay mas elementos");
             return null;
         }else {
-            for (int i = 0; i <= maxPrioridad; i++) {  // Recorrer las colas desde la más alta prioridad (0) a la más baja.
+            for (int i = 0; i <= maxPrioridad; i++) {  
                 if (!this.colas[i].estaVacia()) {
-                    return this.colas[i].desEncolar();  // Desencolar el primer elemento de la cola con prioridad más alta.
+                    return this.colas[i].desEncolar();  
                 }
         }
     }
@@ -50,7 +50,7 @@ public String toString() {
     StringBuilder sb = new StringBuilder();
     
     for (int i = 0; i <= maxPrioridad; i++) {
-        if (!this.colas[i].estaVacia()) {  // Verifica si la sub-cola no está vacía
+        if (!this.colas[i].estaVacia()) {  
             sb.append("Prioridad ").append(i).append(": ").append(this.colas[i].toString()).append("\n");
         }
     }
