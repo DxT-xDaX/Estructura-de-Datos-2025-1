@@ -25,7 +25,7 @@ public class ColaADT<E> {
         return this.data.getFirst();
     }
 
-    public void encolar(E valor){ //enqueue
+    public void encolar(E valor){
         this.data.addLast(valor);
     }
 
@@ -35,6 +35,6 @@ public class ColaADT<E> {
 
     @Override
     public String toString() {
-        return data.toString();  // Deja que LinkedList implemente su propia representación
+        return data.toString(); 
     }
 }
